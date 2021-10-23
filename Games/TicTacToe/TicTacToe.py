@@ -79,8 +79,7 @@ def playerMove():
             playField[postion] = 1
             break
         if (thumby.buttonB.justPressed() == True):
-            machine.reset()
-            break
+            pass
         if (thumby.buttonU.justPressed() == True):
             if (postion == 0):
                 if (playField[6] == 0):
@@ -214,8 +213,9 @@ def checkWinner():
     (1 == playField[2] and 1 == playField[5] and 1 == playField[8]) or
     (1 == playField[0] and 1 == playField[4] and 1 == playField[8]) or
     (1 == playField[2] and 1 == playField[4] and 1 == playField[6])):
-        thumby.display.drawText("You win!!", 5, 10)
+        thumby.display.drawText("Winner!", 5, 10)
         thumby.display.update()
+        machine.reset()
         return True
     elif ((2 == playField[0] and 2 == playField[1] and 2 == playField[2]) or
     (2 == playField[3] and 2 == playField[4] and 2 == playField[5]) or
@@ -225,14 +225,16 @@ def checkWinner():
     (2 == playField[2] and 2 == playField[5] and 2 == playField[8]) or
     (2 == playField[0] and 2 == playField[4] and 2 == playField[8]) or
     (2 == playField[2] and 2 == playField[4] and 2 == playField[6])):
-        thumby.display.drawText("You lose!!", 5, 10)
+        thumby.display.drawText("Loser!", 5, 10)
         thumby.display.update()
+        machine.reset()
         return True
     elif (0 != playField[0] and 0 != playField[1] and 0 != playField[2] and
     0 != playField[3] and 0 != playField[4] and 0 != playField[5] and
     0 != playField[6] and 0 != playField[7] and 0 != playField[8]):
-        thumby.display.drawText("Draw!!", 7, 10)
+        thumby.display.drawText("Draw!", 7, 10)
         thumby.display.update()
+        machine.reset()
         return True
     return False
     
