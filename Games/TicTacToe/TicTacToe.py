@@ -20,17 +20,16 @@
 
 import thumby
 import random
-import time
 import machine
 
 playField = [0,0,0,0,0,0,0,0,0]
 inGame = True
-postion = 0
+dificulty = 7 # 10 = high; 0 = easy Computer
 
 def newGame():
     global playField
     
-    playField = [2,2,0,0,0,2,0,0,0]
+    playField = [0,0,0,0,0,0,0,0,0]
     inGame = True
     thumby.display.fill(0)
     boxBorederSize = int(round(thumby.DISPLAY_H/3))
@@ -69,8 +68,9 @@ def updateField(playerPos = -1):
     thumby.display.update()
 
 def playerMove():
-    global postion, playField
+    global playField
     
+    postion = 0
     while(playField[postion] != 0):
         postion = postion + 1
     updateField(postion)
@@ -83,55 +83,127 @@ def playerMove():
             break
         if (thumby.buttonU.justPressed() == True):
             if (postion == 0):
-                postion = 6
-            elif (postion == 5):
-                postion = 3
+                if (playField[6] == 0):
+                    postion = 6
+                elif (playField[3] == 0):
+                    postion = 3
+            elif (postion == 6):
+                if (playField[3] == 0):
+                    postion = 3
+                elif (playField[0] == 0):
+                    postion = 0
             elif (postion == 3):
-                postion = 0
+                if (playField[0] == 0):
+                    postion = 0
+                elif (playField[6] == 0):
+                    postion = 6
             elif (postion == 1):
-                postion = 7
+                if (playField[7] == 0):
+                    postion = 7
+                elif (playField[4] == 0):
+                    postion = 4
             elif (postion == 7):
-                postion = 4
+                if (playField[4] == 0):
+                    postion = 4
+                elif (playField[1] == 0):
+                    postion = 1
             elif (postion == 4):
-                postion = 1
+                if (playField[1] == 0):
+                    postion = 1
+                elif (playField[7] == 0):
+                    postion = 7
             elif (postion == 2):
-                postion = 8
+                if (playField[8] == 0):
+                    postion = 8
+                elif (playField[5] == 0):
+                    postion = 5
             elif (postion == 8):
-                postion = 5
+                if (playField[5] == 0):
+                    postion = 5
+                elif (playField[2] == 0):
+                    postion = 2
             elif (postion == 5):
-                postion = 2
+                if (playField[2] == 0):
+                    postion = 2
+                elif (playField[8] == 0):
+                    postion = 8
         if (thumby.buttonD.justPressed() == True):
             if (postion == 0):
-                postion = 3
+                if (playField[3] == 0):
+                    postion = 3
+                elif (playField[6] == 0):
+                    postion = 6
             elif (postion == 3):
-                postion = 6
+                if (playField[6] == 0):
+                    postion = 6
+                elif (playField[0] == 0):
+                    postion = 0
             elif (postion == 6):
-                postion = 0
+                if (playField[0] == 0):
+                    postion = 0
+                elif (playField[3] == 0):
+                    postion = 3
             elif (postion == 1):
-                postion = 4
+                if (playField[4] == 0):
+                    postion = 4
+                elif (playField[7] == 0):
+                    postion = 7
             elif (postion == 4):
-                postion = 7
+                if (playField[7] == 0):
+                    postion = 7
+                elif (playField[1] == 0):
+                    postion = 1
             elif (postion == 7):
-                postion = 1
+                if (playField[1] == 0):
+                    postion = 1
+                elif (playField[4] == 0):
+                    postion = 4
             elif (postion == 2):
-                postion = 5
+                if (playField[5] == 0):
+                    postion = 5
+                elif (playField[8] == 0):
+                    postion = 8
             elif (postion == 5):
-                postion = 8
+                if (playField[8] == 0):
+                    postion = 8
+                elif (playField[2] == 0):
+                    postion = 2
             elif (postion == 8):
-                postion = 2
+                if (playField[2] == 0):
+                    postion = 2
+                elif (playField[5] == 0):
+                    postion = 5
         if (thumby.buttonL.justPressed() == True):
             if (postion == 0):
-                postion = 9
+                postion = 8
             else:
                 postion = postion - 1
+            while(playField[postion] != 0):
+                postion = postion - 1
+                if (postion<0):
+                    postion = 8
         if (thumby.buttonR.justPressed() == True):
             if (postion == 8):
                 postion = 0
             else:
                 postion = postion + 1
-        while(playField[postion] != 0):
-            postion = postion + 1
+            while(playField[postion] != 0):
+                postion = postion + 1
+                if (postion>8):
+                    postion = 0
         updateField(postion)
+        
+def computerMove():
+    global playField, dificulty
+    
+    if (random.randint(0,10) <= dificulty):
+        if (playField[4] == 0):
+           playField[4] = 2
+           return
+    postion = random.randint(0,8)
+    while(playField[postion] != 0):
+        postion = random.randint(0,8)
+    playField[postion] = 2
     
 def checkWinner():
     if ((1 == playField[0] and 1 == playField[1] and 1 == playField[2]) or
@@ -142,8 +214,7 @@ def checkWinner():
     (1 == playField[2] and 1 == playField[5] and 1 == playField[8]) or
     (1 == playField[0] and 1 == playField[4] and 1 == playField[8]) or
     (1 == playField[2] and 1 == playField[4] and 1 == playField[6])):
-        thumby.display.fill(0)
-        thumby.display.drawText("X Wins!!", 5, 20)
+        thumby.display.drawText("You win!!", 5, 10)
         thumby.display.update()
         return True
     elif ((2 == playField[0] and 2 == playField[1] and 2 == playField[2]) or
@@ -154,15 +225,13 @@ def checkWinner():
     (2 == playField[2] and 2 == playField[5] and 2 == playField[8]) or
     (2 == playField[0] and 2 == playField[4] and 2 == playField[8]) or
     (2 == playField[2] and 2 == playField[4] and 2 == playField[6])):
-        thumby.display.fill(0)
-        thumby.display.drawText("O Wins!!", 5, 20)
+        thumby.display.drawText("You lose!!", 5, 10)
         thumby.display.update()
         return True
     elif (0 != playField[0] and 0 != playField[1] and 0 != playField[2] and
     0 != playField[3] and 0 != playField[4] and 0 != playField[5] and
     0 != playField[6] and 0 != playField[7] and 0 != playField[8]):
-        thumby.display.fill(0)
-        thumby.display.drawText("Draw!!", 5, 20)
+        thumby.display.drawText("Draw!!", 7, 10)
         thumby.display.update()
         return True
     return False
@@ -170,6 +239,10 @@ def checkWinner():
   
 newGame()
 while(True):
+    computerMove()
+    updateField()
+    if (checkWinner()):
+        break
     playerMove()
     if (checkWinner()):
         break
