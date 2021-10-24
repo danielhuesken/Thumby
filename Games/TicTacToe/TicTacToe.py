@@ -24,11 +24,17 @@ import machine
 
 playField = []
 dificulty = 7 # 10 = high; 0 = easy Computer
+currentPlayer = ''
+winnsX = 0
+winnsO = 0
+draws = 0
 
 def newGame():
-    global playField
+    global playField, currentPlayer
     
     playField = ['','','','','','','','','']
+    if not currentPlayer:
+        currentPlayer = random.choice(['o','x'])
     boxBorederSize = int(round(thumby.DISPLAY_H/3))
     boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
     thumby.display.fill(0)
@@ -66,8 +72,9 @@ def updateField(playerPos = -1):
     thumby.display.update()
 
 def playerMove():
-    global playField
+    global playField, currentPlayer
     
+    currentPlayer = 'o'
     postion = 0
     while(playField[postion]):
         postion = postion + 1
@@ -75,6 +82,7 @@ def playerMove():
     while (True):
         if (thumby.buttonA.justPressed() == True):
             playField[postion] = 'x'
+            updateField()
             break
         if (thumby.buttonB.justPressed() == True):
             pass
@@ -191,96 +199,80 @@ def playerMove():
         updateField(postion)
         
 def computerMove():
-    global playField, dificulty
+    global playField, dificulty, currentPlayer
+    
+    currentPlayer = 'x'
+    setPosition = -1
     
     for palyerId in ['o','x']:
-        if (random.randint(0,10) <= dificulty):
+        if (setPosition == -1 and random.randint(0,10) <= dificulty):
             if (playField[0] == palyerId and playField[1] == palyerId and not playField[2]):
-                playField[2] = 'o'
-                return
+                setPosition = 2
             elif (playField[0] == palyerId and not playField[1] and playField[2] == palyerId):
-                playField[1] = 'o'
-                return
+                setPosition = 1
             elif (not playField[0] and playField[1] == palyerId and playField[2] == palyerId):
-                playField[0] = 'o'
-                return
+                setPosition = 0
             elif (playField[3] == palyerId and playField[4] == palyerId and not playField[5]):
-                playField[5] = 'o'
-                return
+                setPosition = 5
             elif (playField[3] == palyerId and not playField[4] and playField[5] == palyerId):
-                playField[4] = 'o'
-                return
+                setPosition = 4
             elif (not playField[3] and playField[4] == palyerId and playField[5] == palyerId):
-                playField[3] = 'o'
-                return
+                setPosition = 3
             elif (playField[6] == palyerId and playField[7] == palyerId and not playField[8]):
-                playField[8] = 'o'
-                return
+                setPosition = 8
             elif (playField[6] == palyerId and not playField[7] and playField[8] == palyerId):
-                playField[7] = 'o'
-                return
+                setPosition = 7
             elif (not playField[6] and playField[7] == palyerId and playField[8] == palyerId):
-                playField[6] = 'o'
-                return       
+                setPosition = 6
             elif (not playField[0] and playField[3] == palyerId and playField[6] == palyerId):
-                playField[0] = 'o'
-                return
+                setPosition = 0
             elif (playField[0] == palyerId and not playField[3] and playField[6] == palyerId):
-                playField[3] = 'o'
-                return
+                setPosition = 3
             elif (playField[0] == palyerId and playField[3] == palyerId and not playField[6]):
-                playField[6] = 'o'
-                return 
+                setPosition = 6
             elif (not playField[1] and playField[4] == palyerId and playField[7] == palyerId):
-                playField[1] = 'o'
-                return
+                setPosition = 1
             elif (playField[1] == palyerId and not playField[4] and playField[7] == palyerId):
-                playField[4] = 'o'
-                return
+                setPosition = 4
             elif (playField[1] == palyerId and playField[4] == palyerId and not playField[7]):
-                playField[7] = 'o'
-                return 
+                setPosition = 7
             elif (not playField[2] and playField[5] == palyerId and playField == palyerId):
-                playField[2] = 'o'
-                return
+                setPosition = 2
             elif (playField[2] == palyerId and not playField[5] and playField[8] == palyerId):
-                playField[5] = 'o'
-                return
+               setPosition = 5
             elif (playField[2] == palyerId and playField[5] == palyerId and not playField[8]):
-                playField[8] = 'o'
-                return     
+                setPosition = 8
             elif (playField[0] == palyerId and playField[4] == palyerId and not playField[8]):
-                playField[8] = 'o'
-                return
+                setPosition = 8
             elif (playField[0] == palyerId and not playField[4] and playField[8] == palyerId):
-                playField[4] = 'o'
-                return
+                setPosition = 4
             elif (not playField[0] and playField[4] == palyerId and playField[8] == palyerId):
-                playField[0] = 'o'
-                return  
+                setPosition = 0
             elif (not playField[2] and playField[4] == palyerId and playField[6] == palyerId):
-                playField[2] = 'o'
-                return  
+                setPosition = 2
             elif (playField[2] == palyerId and not playField[4] and playField[6] == palyerId):
-                playField[4] = 'o'
-                return 
+                setPosition = 4
             elif (playField[2] == palyerId and playField[4] == palyerId and not playField[6]):
-                playField[6] = 'o'
-                return
+                setPosition = 6
 
-    if (random.randint(0,10) <= dificulty):
-        if not playField[4]:
-           playField[4] = 'o'
-           return
-    postion = random.randint(0,8)
-    while(playField[postion]):
+    if (not playField[4] and setPosition == -1 and random.randint(0,10) <= dificulty):
+       setPosition = 4
+
+    if (setPosition == -1):
         postion = random.randint(0,8)
-    playField[postion] = 'o'
+        while(playField[postion]):
+            postion = random.randint(0,8)
+        setPosition = postion
+        
+    playField[setPosition] = 'o'
+    updateField()
     
 def checkWinner():
-    winner = 0
-    boxBorederSize = int(round(thumby.DISPLAY_H/3))
-    boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
+    global winnsO, winnsX, draws, currentPlayer
+    
+    winner = ''
+    #boxBorederSize = int(round(thumby.DISPLAY_H/3))
+    #boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
 
     for palyerId in ['x','o']:
         if (palyerId == playField[0] and palyerId == playField[1] and palyerId == playField[2]):
@@ -308,11 +300,15 @@ def checkWinner():
             #thumby.display.drawLine(lineStartX, lineStartX, lineEndX, lineEndY)
             winner = palyerId
         if (winner == 'x'):
+            winnsX = winnsX + 1
+            currentPlayer = 'o'
             thumby.display.drawText("Winner!", 10, 10)
             thumby.display.update()
             machine.reset()
             return True
         elif (winner == 'o'):
+            winnsO = winnsO + 1
+            currentPlayer = 'x'
             thumby.display.drawText("Loser!", 12, 10)
             thumby.display.update()
             machine.reset()
@@ -320,6 +316,8 @@ def checkWinner():
     if (playField[0] and playField[1] and playField[2] and
     playField[3] and playField[4] and playField[5] and
     playField[6] and playField[7] and playField[8]):
+        currentPlayer = random.choice(['o','x'])
+        draws = draws + 1
         thumby.display.drawText("Draw!", 14, 10)
         thumby.display.update()
         machine.reset()
@@ -329,10 +327,9 @@ def checkWinner():
   
 newGame()
 while(True):
-    computerMove()
-    updateField()
-    if (checkWinner()):
-        break
-    playerMove()
+    if (currentPlayer == 'o'):
+        computerMove()
+    else:
+        playerMove()
     if (checkWinner()):
         break
