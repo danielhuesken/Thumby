@@ -22,13 +22,13 @@ import thumby
 import random
 import machine
 
-playField = [0,0,0,0,0,0,0,0,0]
+playField = []
 dificulty = 7 # 10 = high; 0 = easy Computer
 
 def newGame():
     global playField
     
-    playField = [0,0,0,0,0,0,0,0,0]
+    playField = ['','','','','','','','','']
     boxBorederSize = int(round(thumby.DISPLAY_H/3))
     boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
     thumby.display.fill(0)
@@ -51,13 +51,13 @@ def updateField(playerPos = -1):
     posX = boxCenter+2
     posY = 2
     for i in range(9):
-        if (i == playerPos and playField[i] == 0):
+        if (i == playerPos and not playField[i]):
             thumby.display.drawSprite(posBitmap,posX,posY,10,10,False,False,-1)
-        elif (playField[i] == 0):
+        elif not playField[i]:
             thumby.display.drawSprite(bitmap0,posX,posY,10,10,False,False,-1)
-        elif (playField[i] == 1):
+        elif (playField[i] == 'x'):
             thumby.display.drawSprite(bitmap1,posX,posY,10,10,False,False,-1)
-        elif (playField[i] == 2):
+        elif (playField[i] == 'o'):
             thumby.display.drawSprite(bitmap2,posX,posY,10,10,False,False,-1)
         posX = posX+boxBorederSize
         if (i == 2 or i == 5 ):
@@ -69,113 +69,113 @@ def playerMove():
     global playField
     
     postion = 0
-    while(playField[postion] != 0):
+    while(playField[postion]):
         postion = postion + 1
     updateField(postion)
     while (True):
         if (thumby.buttonA.justPressed() == True):
-            playField[postion] = 1
+            playField[postion] = 'x'
             break
         if (thumby.buttonB.justPressed() == True):
             pass
         if (thumby.buttonU.justPressed() == True):
             if (postion == 0):
-                if (playField[6] == 0):
+                if not playField[6]:
                     postion = 6
-                elif (playField[3] == 0):
+                elif not playField[3]:
                     postion = 3
             elif (postion == 6):
-                if (playField[3] == 0):
+                if not playField[3]:
                     postion = 3
-                elif (playField[0] == 0):
+                elif not playField[0]:
                     postion = 0
             elif (postion == 3):
-                if (playField[0] == 0):
+                if not playField[0]:
                     postion = 0
-                elif (playField[6] == 0):
+                elif not playField[6]:
                     postion = 6
             elif (postion == 1):
-                if (playField[7] == 0):
+                if not playField[7]:
                     postion = 7
-                elif (playField[4] == 0):
+                elif not playField[4]:
                     postion = 4
             elif (postion == 7):
-                if (playField[4] == 0):
+                if not playField[4]:
                     postion = 4
-                elif (playField[1] == 0):
+                elif not playField[1]:
                     postion = 1
             elif (postion == 4):
-                if (playField[1] == 0):
+                if not playField[1]:
                     postion = 1
-                elif (playField[7] == 0):
+                elif not playField[7]:
                     postion = 7
             elif (postion == 2):
-                if (playField[8] == 0):
+                if not playField[8]:
                     postion = 8
-                elif (playField[5] == 0):
+                elif not playField[5]:
                     postion = 5
             elif (postion == 8):
-                if (playField[5] == 0):
+                if not playField[5]:
                     postion = 5
-                elif (playField[2] == 0):
+                elif not playField[2]:
                     postion = 2
             elif (postion == 5):
-                if (playField[2] == 0):
+                if not playField[2]:
                     postion = 2
-                elif (playField[8] == 0):
+                elif not playField[8]:
                     postion = 8
         if (thumby.buttonD.justPressed() == True):
             if (postion == 0):
-                if (playField[3] == 0):
+                if not playField[3]:
                     postion = 3
-                elif (playField[6] == 0):
+                elif not playField[6]:
                     postion = 6
             elif (postion == 3):
-                if (playField[6] == 0):
+                if not playField[6]:
                     postion = 6
-                elif (playField[0] == 0):
+                elif not playField[0]:
                     postion = 0
             elif (postion == 6):
-                if (playField[0] == 0):
+                if not playField[0]:
                     postion = 0
-                elif (playField[3] == 0):
+                elif not playField[3]:
                     postion = 3
             elif (postion == 1):
-                if (playField[4] == 0):
+                if not playField[4]:
                     postion = 4
-                elif (playField[7] == 0):
+                elif not playField[7]:
                     postion = 7
             elif (postion == 4):
-                if (playField[7] == 0):
+                if not playField[7]:
                     postion = 7
-                elif (playField[1] == 0):
+                elif not playField[1]:
                     postion = 1
             elif (postion == 7):
-                if (playField[1] == 0):
+                if not playField[1]:
                     postion = 1
-                elif (playField[4] == 0):
+                elif not playField[4]:
                     postion = 4
             elif (postion == 2):
-                if (playField[5] == 0):
+                if not playField[5]:
                     postion = 5
-                elif (playField[8] == 0):
+                elif not playField[8]:
                     postion = 8
             elif (postion == 5):
-                if (playField[8] == 0):
+                if not playField[8]:
                     postion = 8
-                elif (playField[2] == 0):
+                elif not playField[2]:
                     postion = 2
             elif (postion == 8):
-                if (playField[2] == 0):
+                if not playField[2]:
                     postion = 2
-                elif (playField[5] == 0):
+                elif not playField[5]:
                     postion = 5
         if (thumby.buttonL.justPressed() == True):
             if (postion == 0):
                 postion = 8
             else:
                 postion = postion - 1
-            while(playField[postion] != 0):
+            while(playField[postion]):
                 postion = postion - 1
                 if (postion<0):
                     postion = 8
@@ -184,7 +184,7 @@ def playerMove():
                 postion = 0
             else:
                 postion = postion + 1
-            while(playField[postion] != 0):
+            while(playField[postion]):
                 postion = postion + 1
                 if (postion>8):
                     postion = 0
@@ -193,96 +193,96 @@ def playerMove():
 def computerMove():
     global playField, dificulty
     
-    for palyerId in [2,1]:
+    for palyerId in ['o','x']:
         if (random.randint(0,10) <= dificulty):
-            if (playField[0] == palyerId and playField[1] == palyerId and playField[2] == 0):
-                playField[2] = 2
+            if (playField[0] == palyerId and playField[1] == palyerId and not playField[2]):
+                playField[2] = 'o'
                 return
-            elif (playField[0] == palyerId and playField[1] == 0 and playField[2] == palyerId):
-                playField[1] = 2
+            elif (playField[0] == palyerId and not playField[1] and playField[2] == palyerId):
+                playField[1] = 'o'
                 return
-            elif (playField[0] == 0 and playField[1] == palyerId and playField[2] == palyerId):
-                playField[0] = 2
+            elif (not playField[0] and playField[1] == palyerId and playField[2] == palyerId):
+                playField[0] = 'o'
                 return
-            elif (playField[3] == palyerId and playField[4] == palyerId and playField[5] == 0):
-                playField[5] = 2
+            elif (playField[3] == palyerId and playField[4] == palyerId and not playField[5]):
+                playField[5] = 'o'
                 return
-            elif (playField[3] == palyerId and playField[4] == 0 and playField[5] == palyerId):
-                playField[4] = 2
+            elif (playField[3] == palyerId and not playField[4] and playField[5] == palyerId):
+                playField[4] = 'o'
                 return
-            elif (playField[3] == 0 and playField[4] == palyerId and playField[5] == palyerId):
-                playField[3] = 2
+            elif (not playField[3] and playField[4] == palyerId and playField[5] == palyerId):
+                playField[3] = 'o'
                 return
-            elif (playField[6] == palyerId and playField[7] == palyerId and playField[8] == 0):
-                playField[8] = 2
+            elif (playField[6] == palyerId and playField[7] == palyerId and not playField[8]):
+                playField[8] = 'o'
                 return
-            elif (playField[6] == palyerId and playField[7] == 0 and playField[8] == palyerId):
-                playField[7] = 2
+            elif (playField[6] == palyerId and not playField[7] and playField[8] == palyerId):
+                playField[7] = 'o'
                 return
-            elif (playField[6] == 0 and playField[7] == palyerId and playField[8] == palyerId):
-                playField[6] = 2
+            elif (not playField[6] and playField[7] == palyerId and playField[8] == palyerId):
+                playField[6] = 'o'
                 return       
-            elif (playField[0] == 0 and playField[3] == palyerId and playField[6] == palyerId):
-                playField[0] = 2
+            elif (not playField[0] and playField[3] == palyerId and playField[6] == palyerId):
+                playField[0] = 'o'
                 return
-            elif (playField[0] == palyerId and playField[3] == 0 and playField[6] == palyerId):
-                playField[3] = 2
+            elif (playField[0] == palyerId and not playField[3] and playField[6] == palyerId):
+                playField[3] = 'o'
                 return
-            elif (playField[0] == palyerId and playField[3] == palyerId and playField[6] == 0):
-                playField[6] = 2
+            elif (playField[0] == palyerId and playField[3] == palyerId and not playField[6]):
+                playField[6] = 'o'
                 return 
-            elif (playField[1] == 0 and playField[4] == palyerId and playField[7] == palyerId):
-                playField[1] = 2
+            elif (not playField[1] and playField[4] == palyerId and playField[7] == palyerId):
+                playField[1] = 'o'
                 return
-            elif (playField[1] == palyerId and playField[4] == 0 and playField[7] == palyerId):
-                playField[4] = 2
+            elif (playField[1] == palyerId and not playField[4] and playField[7] == palyerId):
+                playField[4] = 'o'
                 return
-            elif (playField[1] == palyerId and playField[4] == palyerId and playField[7] == 0):
-                playField[7] = 2
+            elif (playField[1] == palyerId and playField[4] == palyerId and not playField[7]):
+                playField[7] = 'o'
                 return 
-            elif (playField[2] == 0 and playField[5] == palyerId and playField[8] == palyerId):
-                playField[2] = 2
+            elif (not playField[2] and playField[5] == palyerId and playField == palyerId):
+                playField[2] = 'o'
                 return
-            elif (playField[2] == palyerId and playField[5] == 0 and playField[8] == palyerId):
-                playField[5] = 2
+            elif (playField[2] == palyerId and not playField[5] and playField[8] == palyerId):
+                playField[5] = 'o'
                 return
-            elif (playField[2] == palyerId and playField[5] == palyerId and playField[8] == 0):
-                playField[8] = 2
+            elif (playField[2] == palyerId and playField[5] == palyerId and not playField[8]):
+                playField[8] = 'o'
                 return     
-            elif (playField[0] == palyerId and playField[4] == palyerId and playField[8] == 0):
-                playField[8] = 2
+            elif (playField[0] == palyerId and playField[4] == palyerId and not playField[8]):
+                playField[8] = 'o'
                 return
-            elif (playField[0] == palyerId and playField[4] == 0 and playField[8] == palyerId):
-                playField[4] = 2
+            elif (playField[0] == palyerId and not playField[4] and playField[8] == palyerId):
+                playField[4] = 'o'
                 return
-            elif (playField[0] == 0 and playField[4] == palyerId and playField[8] == palyerId):
-                playField[0] = 2
+            elif (not playField[0] and playField[4] == palyerId and playField[8] == palyerId):
+                playField[0] = 'o'
                 return  
-            elif (playField[2] == 0 and playField[4] == palyerId and playField[6] == palyerId):
-                playField[2] = 2
+            elif (not playField[2] and playField[4] == palyerId and playField[6] == palyerId):
+                playField[2] = 'o'
                 return  
-            elif (playField[2] == palyerId and playField[4] == 0 and playField[6] == palyerId):
-                playField[4] = 2
+            elif (playField[2] == palyerId and not playField[4] and playField[6] == palyerId):
+                playField[4] = 'o'
                 return 
-            elif (playField[2] == palyerId and playField[4] == palyerId and playField[6] == 0):
-                playField[6] = 2
+            elif (playField[2] == palyerId and playField[4] == palyerId and not playField[6]):
+                playField[6] = 'o'
                 return
 
     if (random.randint(0,10) <= dificulty):
-        if (playField[4] == 0):
-           playField[4] = 2
+        if not playField[4]:
+           playField[4] = 'o'
            return
     postion = random.randint(0,8)
-    while(playField[postion] != 0):
+    while(playField[postion]):
         postion = random.randint(0,8)
-    playField[postion] = 2
+    playField[postion] = 'o'
     
 def checkWinner():
     winner = 0
     boxBorederSize = int(round(thumby.DISPLAY_H/3))
     boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
 
-    for palyerId in [1,2]:
+    for palyerId in ['x','o']:
         if (palyerId == playField[0] and palyerId == playField[1] and palyerId == playField[2]):
             #thumby.display.drawLine(boxCenter, boxBorederSize, boxCenter, boxBorederSize)
             winner = palyerId
@@ -307,19 +307,19 @@ def checkWinner():
         elif (palyerId == playField[2] and palyerId == playField[4] and palyerId == playField[6]):
             #thumby.display.drawLine(lineStartX, lineStartX, lineEndX, lineEndY)
             winner = palyerId
-        if (winner == 1):
+        if (winner == 'x'):
             thumby.display.drawText("Winner!", 10, 10)
             thumby.display.update()
             machine.reset()
             return True
-        elif (winner == 2):
+        elif (winner == 'o'):
             thumby.display.drawText("Loser!", 12, 10)
             thumby.display.update()
             machine.reset()
             return True
-    if (0 != playField[0] and 0 != playField[1] and 0 != playField[2] and
-    0 != playField[3] and 0 != playField[4] and 0 != playField[5] and
-    0 != playField[6] and 0 != playField[7] and 0 != playField[8]):
+    if (playField[0] and playField[1] and playField[2] and
+    playField[3] and playField[4] and playField[5] and
+    playField[6] and playField[7] and playField[8]):
         thumby.display.drawText("Draw!", 14, 10)
         thumby.display.update()
         machine.reset()
