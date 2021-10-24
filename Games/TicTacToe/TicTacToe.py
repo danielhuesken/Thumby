@@ -24,6 +24,7 @@ import machine
 
 playField = []
 dificulty = 7 # 10 = high; 0 = easy Computer
+playerSymbol = 'x' 
 currentPlayer = ''
 winnsX = 0
 winnsO = 0
@@ -72,16 +73,19 @@ def updateField(playerPos = -1):
     thumby.display.update()
 
 def playerMove():
-    global playField, currentPlayer
+    global playField, currentPlayer, playerSymbol
     
-    currentPlayer = 'o'
+    if (playerSymbol == 'x'):
+        currentPlayer = 'o'
+    else:
+        currentPlayer = 'x'
     postion = 0
     while(playField[postion]):
         postion = postion + 1
     updateField(postion)
     while (True):
         if (thumby.buttonA.justPressed() == True):
-            playField[postion] = 'x'
+            playField[postion] = playerSymbol
             updateField()
             break
         if (thumby.buttonB.justPressed() == True):
@@ -199,12 +203,17 @@ def playerMove():
         updateField(postion)
         
 def computerMove():
-    global playField, dificulty, currentPlayer
+    global playField, dificulty, currentPlayer, playerSymbol
     
-    currentPlayer = 'x'
     setPosition = -1
+    if (playerSymbol == 'x'):
+        currentPlayer = 'x'
+        playerIds = ['o','x']
+    else:
+        currentPlayer = 'o'
+        playerIds = ['x','o']
     
-    for palyerId in ['o','x']:
+    for palyerId in playerIds:
         if (setPosition == -1 and random.randint(0,10) <= dificulty):
             if (playField[0] == palyerId and playField[1] == palyerId and not playField[2]):
                 setPosition = 2
@@ -263,12 +272,15 @@ def computerMove():
         while(playField[postion]):
             postion = random.randint(0,8)
         setPosition = postion
-        
-    playField[setPosition] = 'o'
+     
+    if (playerSymbol == 'x'):  
+        playField[setPosition] = 'o'
+    else: 
+        playField[setPosition] = 'x'
     updateField()
     
 def checkWinner():
-    global winnsO, winnsX, draws, currentPlayer
+    global winnsO, winnsX, draws, currentPlayer, playerSymbol
     
     winner = ''
     #boxBorederSize = int(round(thumby.DISPLAY_H/3))
@@ -302,16 +314,20 @@ def checkWinner():
         if (winner == 'x'):
             winnsX = winnsX + 1
             currentPlayer = 'o'
-            thumby.display.drawText("Winner!", 10, 10)
+            if (playerSymbol == 'x'):
+                thumby.display.drawText("Winner!", 10, 10)
+            else:
+                thumby.display.drawText("Loser!", 12, 10)
             thumby.display.update()
-            machine.reset()
             return True
         elif (winner == 'o'):
             winnsO = winnsO + 1
             currentPlayer = 'x'
-            thumby.display.drawText("Loser!", 12, 10)
+            if (playerSymbol == 'o'):
+                thumby.display.drawText("Winner!", 10, 10)
+            else:
+                thumby.display.drawText("Loser!", 12, 10)
             thumby.display.update()
-            machine.reset()
             return True
     if (playField[0] and playField[1] and playField[2] and
     playField[3] and playField[4] and playField[5] and
@@ -320,16 +336,16 @@ def checkWinner():
         draws = draws + 1
         thumby.display.drawText("Draw!", 14, 10)
         thumby.display.update()
-        machine.reset()
         return True
     return False
     
   
 newGame()
 while(True):
-    if (currentPlayer == 'o'):
+    if (currentPlayer != playerSymbol):
         computerMove()
     else:
         playerMove()
     if (checkWinner()):
         break
+machine.reset()
