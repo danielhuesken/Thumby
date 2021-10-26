@@ -1,7 +1,6 @@
-# Tic Tac Toe.
-
+# Tic Tac Toe game for thumby.
 # Written by Daniel Huesken (https://danielhuesken.de) for thumbly.
-# Last edited 10/23/2021
+
 
 '''
     This program is free software: you can redistribute it and/or modify
@@ -17,6 +16,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
+
+import thumby
+import random
+import machine
 
 import thumby
 import random
