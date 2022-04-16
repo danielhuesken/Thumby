@@ -35,36 +35,36 @@ def newGame():
     playField = ['','','','','','','','','']
     if not currentPlayer:
         currentPlayer = random.choice(['o','x'])
-    boxBorederSize = int(round(thumby.DISPLAY_H/3))
-    boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
+    boxBorederSize = int(round(thumby.display.height/3))
+    boxCenter = int(round((thumby.display.width-thumby.display.height)/2))
     thumby.display.fill(0)
-    thumby.display.drawLine(boxCenter+boxBorederSize, 0, boxCenter+boxBorederSize, thumby.DISPLAY_H)
-    thumby.display.drawLine(boxCenter+boxBorederSize*2, 0, boxCenter+boxBorederSize*2, thumby.DISPLAY_H)
-    thumby.display.drawLine(boxCenter,boxBorederSize, boxCenter+thumby.DISPLAY_H, boxBorederSize)
-    thumby.display.drawLine(boxCenter,boxBorederSize*2, boxCenter+thumby.DISPLAY_H, boxBorederSize*2)
+    thumby.display.drawLine(boxCenter+boxBorederSize, 0, boxCenter+boxBorederSize, thumby.display.height, 1)
+    thumby.display.drawLine(boxCenter+boxBorederSize*2, 0, boxCenter+boxBorederSize*2, thumby.display.height, 1)
+    thumby.display.drawLine(boxCenter,boxBorederSize, boxCenter+thumby.display.height, boxBorederSize, 1)
+    thumby.display.drawLine(boxCenter,boxBorederSize*2, boxCenter+thumby.display.height, boxBorederSize*2, 1)
     thumby.display.update()
 
     
 def updateField(playerPos = -1):
     global playField
     
-    boxBorederSize = int(round(thumby.DISPLAY_H/3))
-    boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
-    bitmapEmpty = (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-    bitmapX = (1,2,132,72,48,48,72,132,2,1,2,1,0,0,0,0,0,0,1,2)
-    bitmapO = (48,204,134,2,1,1,2,134,204,48,0,0,1,1,2,2,1,1,0,0)
-    bitmapCursor =  (0,0,190,126,254,62,206,242,0,0, 0,0,1,1,0,1,1,1,0,0)
+    boxBorederSize = int(round(thumby.display.height/3))
+    boxCenter = int(round((thumby.display.width-thumby.display.height)/2))
+    bitmapEmpty = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+    bitmapX = bytearray([1,2,132,72,48,48,72,132,2,1,2,1,0,0,0,0,0,0,1,2])
+    bitmapO = bytearray([48,204,134,2,1,1,2,134,204,48,0,0,1,1,2,2,1,1,0,0])
+    bitmapCursor =  bytearray([0,0,190,126,254,62,206,242,0,0, 0,0,1,1,0,1,1,1,0,0])
     posX = boxCenter+2
     posY = 2
     for i in range(9):
         if (i == playerPos and not playField[i]):
-            thumby.display.drawSprite(bitmapCursor,posX,posY,10,10,False,False,-1)
+            thumby.display.drawSprite(thumby.Sprite(10,10,bitmapCursor,posX,posY))
         elif not playField[i]:
-            thumby.display.drawSprite(bitmapEmpty,posX,posY,10,10,False,False,-1)
+            thumby.display.drawSprite(thumby.Sprite(10,10,bitmapEmpty,posX,posY))
         elif (playField[i] == 'x'):
-            thumby.display.drawSprite(bitmapX,posX,posY,10,10,False,False,-1)
+            thumby.display.drawSprite(thumby.Sprite(10,10,bitmapX,posX,posY))
         elif (playField[i] == 'o'):
-            thumby.display.drawSprite(bitmapO,posX,posY,10,10,False,False,-1)
+            thumby.display.drawSprite(thumby.Sprite(10,10,bitmapO,posX,posY))
         posX = posX+boxBorederSize
         if (i == 2 or i == 5 ):
             posX = boxCenter+2
@@ -222,42 +222,42 @@ def checkWinner():
     global winnsO, winnsX, draws, currentPlayer, playerSymbol
     
     winner = ''
-    #boxBorederSize = int(round(thumby.DISPLAY_H/3))
-    #boxCenter = int(round((thumby.DISPLAY_W-thumby.DISPLAY_H)/2))
+    #boxBorederSize = int(round(thumby.display.height/3))
+    #boxCenter = int(round((thumby.display.width-thumby.display.height)/2))
 
     for palyer in ['x','o']:
         if (palyer == playField[0] and palyer == playField[1] and palyer == playField[2]):
-            #thumby.display.drawLine(boxCenter, boxBorederSize, boxCenter, boxBorederSize)
+            #thumby.display.drawLine(boxCenter, boxBorederSize, boxCenter, boxBorederSize, 1)
             winner = palyer
         elif (palyer == playField[3] and palyer == playField[4] and palyer == playField[5]):
-            #thumby.display.drawLine(boxCenter, boxBorederSize+boxBorederSize, boxCenter, boxBorederSize+boxBorederSize)
+            #thumby.display.drawLine(boxCenter, boxBorederSize+boxBorederSize, boxCenter, boxBorederSize+boxBorederSize, 1)
             winner = palyer
         elif (palyer == playField[6] and palyer == playField[7] and palyer == playField[8]):
-            #thumby.display.drawLine(boxCenter, boxBorederSize+boxBorederSize*2, boxCenter, boxBorederSize+boxBorederSize*2)
+            #thumby.display.drawLine(boxCenter, boxBorederSize+boxBorederSize*2, boxCenter, boxBorederSize+boxBorederSize*2, 1)
             winner = palyer
         elif (palyer == playField[0] and palyer == playField[3] and palyer == playField[6]):
-            #thumby.display.drawLine(lineStartX, lineStartY, lineStartX, lineStartY)
+            #thumby.display.drawLine(lineStartX, lineStartY, lineStartX, lineStartY, 1)
             winner = palyer
         elif (palyer == playField[1] and palyer == playField[4] and palyer == playField[7]):
-            #thumby.display.drawLine(lineStartX+boxBorederSize, lineStartY, lineStartX+boxBorederSize, lineStartY)
+            #thumby.display.drawLine(lineStartX+boxBorederSize, lineStartY, lineStartX+boxBorederSize, lineStartY, 1)
             winner = palyer
         elif (palyer == playField[2] and palyer == playField[5] and palyer == playField[8]):
-            #thumby.display.drawLine(lineStartX+boxBorederSize*2, lineStartY, lineStartX+boxBorederSize*2, lineStartY)
+            #thumby.display.drawLine(lineStartX+boxBorederSize*2, lineStartY, lineStartX+boxBorederSize*2, lineStartY, 1)
             winner = palyer
         elif (palyer == playField[0] and palyer == playField[4] and palyer == playField[8]):
-            #thumby.display.drawLine(lineEndX, lineEndY, lineStartX, lineStartY)
+            #thumby.display.drawLine(lineEndX, lineEndY, lineStartX, lineStartY, 1)
             winner = palyer
         elif (palyer == playField[2] and palyer == playField[4] and palyer == playField[6]):
-            #thumby.display.drawLine(lineStartX, lineStartX, lineEndX, lineEndY)
+            #thumby.display.drawLine(lineStartX, lineStartX, lineEndX, lineEndY, 1)
             winner = palyer
         if (winner == 'x'):
             winnsX = winnsX + 1
             currentPlayer = 'o'
             if (playerSymbol == 'x'):
-                thumby.display.fillRect(6, 10, 60, 10, 0)
+                thumby.display.drawFilledRectangle(6, 10, 60, 10, 0)
                 thumby.display.drawText("Winner!", 10, 11, 1)
             else:
-                thumby.display.fillRect(6, 10, 60, 10, 0)
+                thumby.display.drawFilledRectangle(6, 10, 60, 10, 0)
                 thumby.display.drawText("Loser!", 12, 11, 1)
             thumby.display.update()
             return True
@@ -265,10 +265,10 @@ def checkWinner():
             winnsO = winnsO + 1
             currentPlayer = 'x'
             if (playerSymbol == 'o'):
-                thumby.display.fillRect(6, 10, 60, 10, 0)
+                thumby.display.drawFilledRectangle(6, 10, 60, 10, 0)
                 thumby.display.drawText("Winner!", 10, 11, 1)
             else:
-                thumby.display.fillRect(6, 10, 60, 10, 0)
+                thumby.display.drawFilledRectangle(6, 10, 60, 10, 0)
                 thumby.display.drawText("Loser!", 10, 11, 1)
             thumby.display.update()
             return True
@@ -277,7 +277,7 @@ def checkWinner():
     playField[6] and playField[7] and playField[8]):
         currentPlayer = random.choice(['o','x'])
         draws = draws + 1
-        thumby.display.fillRect(6, 10, 60, 10, 0)
+        thumby.display.drawFilledRectangle(6, 10, 60, 10, 0)
         thumby.display.drawText("Draw!", 14, 10, 1)
         thumby.display.update()
         return True
